@@ -1,0 +1,29 @@
+{
+  "name": "atelier-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mini-boutique de départ pour Atelier 2 DevSecOps",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest --runInBand",
+    "test:unit": "jest --runInBand tests/unit",
+    "test:int": "jest --runInBand tests/integration",
+    "test:e2e": "playwright test",
+    "test:cov": "jest --runInBand --coverage"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "@playwright/test": "^1.56.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/unit/**/*.test.js", "**/tests/integration/**/*.test.js"],
+    "collectCoverageFrom": ["src/**/*.js"],
+    "coveragePathIgnorePatterns": ["/node_modules/"]
+  }
+}
