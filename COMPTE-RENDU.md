@@ -8,7 +8,7 @@ Branche de travail `atelier2`. La mini-boutique combine l’analyse statique Son
 | --- | --- | --- | --- | --- | --- |
 | SonarQube | Code JavaScript et couverture LCOV | Couverture de `utils.js` et en-tête Express | À relever | Conditions de la Quality Gate sur le code nouveau | En local dans cet atelier |
 | npm audit | Dépendances directes et transitives du lockfile | Version ancienne de lodash dans l’expérience | 6,80 s sur le projet | Au moins un avis de niveau HIGH ou CRITICAL | Chaque push et pull request |
-| Trivy | Paquets système et dépendances présents dans l’image | Comparaison des images Node 16 et Node 22 Alpine | À relever | Au moins une vulnérabilité HIGH ou CRITICAL avec un correctif disponible | Après les tests unitaires |
+| Trivy | Paquets système et dépendances présents dans l’image | 10 alertes HIGH liées au npm de l’image Node avant son retrait | 4,39 s sur l’image finale avec cache | Au moins une vulnérabilité HIGH ou CRITICAL avec un correctif disponible | Après les tests unitaires |
 
 ## Analyse statique
 
@@ -35,11 +35,14 @@ Branche de travail `atelier2`. La mini-boutique combine l’analyse statique Son
 
 ## Résultats locaux vérifiés
 
-- Les 12 tests unitaires passent.
+- Les 12 tests unitaires et les 5 tests PostgreSQL passent. Jest mesure 85,10 % de couverture des lignes sur l’ensemble des fichiers collectés et 100 % sur `utils.js`.
 - Le test Playwright de connexion passe avec Chromium.
 - Sur la mini-boutique, `npm audit --audit-level=high` a trouvé 0 vulnérabilité.
 - `npm ls qs` confirme que `qs` est apporté par Express et Superagent.
 - Dans un projet temporaire, lodash 4.17.15 a déclenché 1 vulnérabilité HIGH et un code de retour 1. Après retrait, le nombre de vulnérabilités et le code de retour sont revenus à 0.
+- L’image finale tourne sous l’utilisateur `node`. Après retrait de npm du système de fichiers final, Trivy a trouvé 0 HIGH, 0 CRITICAL avec `--ignore-unfixed` et a renvoyé 0.
+- L’image naïve tourne sous `root` et occupe 1,45 Go sur disque. Avec le même filtre Trivy, elle cumule 262 HIGH et 12 CRITICAL, avec un code de retour 1 en 147,59 s.
+- L’image finale occupe 246 Mo et répond à `/health`. Docker affiche 371 Mo de taille de contenu pour l’image naïve et 62,2 Mo pour l’image finale.
 
 ## Preuves à joindre
 
