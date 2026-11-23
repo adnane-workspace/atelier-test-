@@ -3,6 +3,11 @@ const app = require('../../src/app');
 const { pool } = require('../../src/db');
 describe('API mini-boutique', () => {
   afterAll(async () => { await pool.end(); });
+  test('ne divulgue pas la technologie du serveur', async () => {
+    const res = await request(app).get('/users/1');
+    expect(res.status).toBe(200);
+    expect(res.headers['x-powered-by']).toBeUndefined();
+  });
   test('identifiant invalide renvoie 400', async () => {
     const res = await request(app).get('/users/abc');
     expect(res.status).toBe(400);

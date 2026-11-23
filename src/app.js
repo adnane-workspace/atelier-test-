@@ -3,6 +3,7 @@ const path = require('path');
 const { estIdValide } = require('./validation');
 const { getUserById } = require('./db');
 const app = express();
+app.disable('x-powered-by');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
